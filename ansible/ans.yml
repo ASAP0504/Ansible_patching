@@ -1,0 +1,24 @@
+---
+- name: test
+  hosts: testserver
+  remote_user: jeet
+  tasks:
+    #    - name: copy binaries to a path
+    #  shell: mv fmw_12.2.1.4.0_infrastructure.jar /weblogic && ls -lrt
+    # args:
+    #   chdir: /home/jeet
+    # register: output
+    #- debug: msg="{{ output.stdout }}"
+
+    #- name: Mkdir to create weblogic 
+    # shell: cd /weblogic && mkdir weblogic_binary && ls -lrt
+    # register: out
+    #- debug: msg="{{ out.stdout }}"
+    - name: change directory
+      shell: cd /weblogic
+    - name: List files
+      shell: ls -lrt
+      register: out
+    - debug: msg="{{ out.stdout }}"
+
+  
