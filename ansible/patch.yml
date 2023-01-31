@@ -1,0 +1,29 @@
+---
+- name: Patch weblogic
+  hosts: "{{host}}"
+  remote_user: jeet
+  tasks:
+   - name: Copy patch file to destination
+     copy:
+      src: ~/p34653267_122140_Generic.zip
+      dest: /weblogic
+      owner: jeet
+      group: jeet
+      mode: 0775
+   - name: Unzip tar file
+     shell: unzip p34653267_122140_Generic.zip
+     args:
+      chdir: /weblogic
+   - name: copy patch script
+     copy:
+      src: ~/patch.sh
+      dest: /weblogic
+      owner: jeet
+      group: jeet
+      mode: 0775
+   - name: apply patch
+     shell: /weblogic/patch.sh
+
+ 
+
+

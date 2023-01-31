@@ -1,0 +1,9 @@
+---
+- name: role test
+  hosts: testserver 
+  remote_user: jeet
+  
+  tasks:
+    - include_role:
+        name: SPB_apply
+     

@@ -1,0 +1,9 @@
+---
+# vars file for rollback_patch
+ORACLE_HOME: /weblogic/weblogic_binary
+OPATCH_PATH: "{{ ORACLE_HOME }}/OPatch"
+ROLLBACK_ID:
+  - id: 34653267
+    name: p34653267_122140_Generic.zip
+  - id: 33639718
+    name: p33639718_122140_Linux-x86-64.zip

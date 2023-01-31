@@ -1,0 +1,43 @@
+---
+# tasks file for oracle_backup
+- stat:
+   path: "{{ ORACLE_HOME }}"
+  register: ORACLE_HOME_PATH
+- stat:
+   path: "{{ BACKUP_LOC }}/weblogic_binary.tar.gz"
+  register: TAR_FILE
+- stat:
+   path: "{{ BACKUP_LOC }}/weblogic_binary.tar.gz_{{ ansible_date_time.date }}"
+  register: BACKUP_TAR   
+- debug:
+   msg: Renaming old file
+  when:
+    - TAR_FILE.stat.exists
+    - ORACLE_HOME_PATH.stat.exists
+- name: Backup Oracle home Check if weblogic_binary.tar.gz is already present
+  shell: "mv {{ BACKUP_LOC }}/weblogic_binary.tar.gz {{ BACKUP_LOC }}/weblogic_binary.tar.gz_{{ ansible_date_time.date }}"
+  when: 
+    - TAR_FILE.stat.exists
+    - not BACKUP_TAR.stat.exists
+- debug:
+   msg: Renamed old file
+  when:
+    - TAR_FILE.stat.exists
+    - not BACKUP_TAR.stat.exists
+- debug:
+   msg: There is a back from Today, please taken action on that backup file and try again
+  failed_when:
+    - BACKUP_TAR.stat.exists
+- debug: 
+   msg: Backing Up weblogic home
+  when:
+    - not BACKUP_TAR.stat.exists
+- name: Backup Oracle home  Backup Oracle home 
+  shell: "tar -czf {{ BACKUP_LOC }}/weblogic_binary.tar.gz {{ ORACLE_HOME }}"
+  when:
+    - not BACKUP_TAR.stat.exists
+- debug:
+   msg: Backed up weblogic_home
+  when:
+    - ORACLE_HOME_PATH.stat.exists
+    - not BACKUP_TAR.stat.exists

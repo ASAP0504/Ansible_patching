@@ -1,0 +1,31 @@
+---
+# tasks file for check_patch
+- name: Check patches already installed
+  shell: "{{ORACLE_HOME}}/OPatch/opatch lspatches"
+  register: PATCH_RESULTS
+
+- name: check from list If patches are required
+  set_fact:
+    patch_todo: "{{ patch_todo + [item] }}"
+  when: PATCH_RESULTS.stdout.find(item.id|string) == -1
+  with_items: "{{ patches }}"
+
+- debug:
+   msg:
+    - Below Patches needs to be installed and unzipped      
+    - "{{ patch_todo }}"
+  when: 
+    - patch_todo | length > 0
+- include_tasks: unzip_patch.yml  
+  when:  
+    - patch_todo | length > 0
+- debug:
+   msg:
+    - No patch is required to be installed
+  when:
+    - patch_todo | length == 0
+- include_tasks: apply_patch.yml
+  when:
+    - patch_todo | length > 0
+    - apply 
+

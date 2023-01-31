@@ -1,0 +1,44 @@
+---
+# tasks file for jeet
+- stat:
+   path: "{{ java_root }}/jdk"
+  register: java_dir
+- name: list java version in "{{ java_root }}"    
+  shell: "{{ java_root }}/jdk/bin/java -version"
+  register: details
+  when: java_dir.stat.exists
+- debug:
+   msg: java needs to be updated 
+  when:
+    - java_dir.stat.exists
+    - details.stderr is not search(java_version)
+- debug:
+   msg: version is same
+  when:
+    - java_dir.stat.exists
+    - details.stderr is search(java_version)
+- debug:
+   msg: No java found,need to install java
+  when:
+    - not java_dir.stat.exists
+
+- name: install java
+  block:
+    - name: backup java
+      shell: "mv {{ java_root }}/jdk {{ java_root }}/jdk_{{ansible_date_time.date}}"
+      when:
+         - java_dir.stat.exists
+    - name: Copy binary and unzip
+      unarchive:
+        src: "/etc/ansible/{{java_file}}"
+        dest: /weblogic/
+        owner: jeet
+        group: jeet
+        mode: 0775
+    - name: Rename to jdk      
+      shell: "mv {{ java_root }}/{{java_file_explode}} {{ java_root }}/jdk"     
+    - debug:
+        msg: Java has been updated
+
+  when:
+     - not java_dir.stat.exists or details.stderr is not search(java_version)

@@ -1,0 +1,34 @@
+---
+# tasks file for SPB_apply
+- name: Copy SPB patch and unzip
+  unarchive:
+    src: "{{PATCH_REPO}}/{{item.name}}"
+    dest: "{{DEST_PATCH_REPO}}"
+  with_items: "{{spb_patches}}"  
+- name: Create patch list
+  shell : "echo {{DEST_PATCH_REPO}}/{{spb_folder}}/binary_patches/{{item.name}} >> {{DEST_PATCH_REPO}}/{{spb_folder}}/binary_patches/linux_patchlist.txt"
+  with_items: "{{linux_patch_file}}"
+- name: check if SPB patch already installed
+  shell: "{{ORACLE_HOME}}/OPatch/opatch napply -report -oh {{ORACLE_HOME}} -phBaseFile {{DEST_PATCH_REPO}}/{{spb_folder}}/binary_patches/linux_patchlist.txt -silent"
+  register: report 
+
+- set_fact:
+    patch_needed: true
+  when: 
+    - report.stdout is search("OPatch continues with these patches")
+- debug:
+   msg:
+    - no patches are needed to be installed
+  when: 
+    - not patch_needed
+- debug:
+   msg:
+    - patches are needed to be installed
+  when:
+    - patch_needed
+
+- name: Apply SPB patch
+  shell: "{{ORACLE_HOME}}/OPatch/opatch napply -oh {{ORACLE_HOME}} -phBaseFile {{DEST_PATCH_REPO}}/WLS_SPB_12.2.1.4.221011/binary_patches/linux_patchlist.txt -silent"
+  when:
+    - patch_needed
+    - apply

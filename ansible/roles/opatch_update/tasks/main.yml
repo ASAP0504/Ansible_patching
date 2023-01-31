@@ -1,0 +1,16 @@
+---
+# tasks file for opatch_update
+- name: Check the current version of OPATCH is the server
+  shell: "{{ORACLE_HOME}}/OPatch/opatch version"
+  register: OPATCH_VERSION
+
+- debug: 
+   msg:
+    - OPATCH upgrade is not required
+  when: OPATCH_VERSION.stdout is search(UPDATE_OPATCH_VERSION)
+
+- debug:
+   msg:
+    - OPATCH upgrade is required
+  when: OPATCH_VERSION.stdout is not search(UPDATE_OPATCH_VERSION) 
+

@@ -1,0 +1,5 @@
+---
+
+- name: Apply patches
+  shell: "{{ORACLE_HOME}}/OPatch/opatch apply {{DEST_PATCH_REPO}}/{{item.id}} -silent"
+  with_items: "{{patch_todo}}"    

@@ -1,0 +1,4 @@
+---
+# vars file for check_patch
+ORACLE_HOME: /weblogic/weblogic_binary
+UPDATE_OPATCH_VERSION: 13.9.4.2.12

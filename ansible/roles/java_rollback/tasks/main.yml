@@ -1,0 +1,15 @@
+---
+# tasks file for java_rollback
+- stat:
+   path: "{{ java_root }}/jdk_{{ date }}"
+  register: JAVA
+- name: Rollback JAVA
+  block:
+    - name: Remove Current Java
+      shell: "rm -rf {{ java_root }}/jdk"
+    - name: Restore Old java
+      shell: "mv {{ java_root }}/jdk_{{ansible_date_time.date}} {{ java_root }}/jdk"    
+    - debug:
+       msg: Java has been rolled back
+  when:
+    - JAVA.stat.exists

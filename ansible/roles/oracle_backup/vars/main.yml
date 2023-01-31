@@ -1,0 +1,5 @@
+---
+# vars file for oracle_backup
+ORACLE_HOME: /weblogic/weblogic_binary
+BACKUP_LOC: /weblogic/backup_loc
+

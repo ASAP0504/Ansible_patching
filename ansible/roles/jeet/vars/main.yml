@@ -1,0 +1,7 @@
+---
+# vars file for jeet
+java_root: /weblogic
+current_java: jdk1.8.0_331
+java_version: 1.8.0_341
+java_file: jdk-8u341-linux-x64.tar.gz 
+java_file_explode: jdk"{{java_version}}"

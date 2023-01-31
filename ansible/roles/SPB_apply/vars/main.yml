@@ -1,0 +1,22 @@
+---
+# vars file for check_patch
+ORACLE_HOME: /weblogic/weblogic_binary
+patch_todo: []
+patch_needed: false
+apply: false
+spb_patches:
+  - id: 34689215
+    name: p34689215_122140_Generic.zip
+    version: 221011
+spb_folder: WLS_SPB_12.2.1.4.221011
+PATCH_REPO: /PATCH_REPO
+DEST_PATCH_REPO: /weblogic/PATCH_REPO
+linux_patch_file:
+  - name: adr/linux64/
+  - name: wls/generic/
+  - name: coherence/generic/
+  - name: samples/generic/
+  - name: fmw_platform/generic/
+  - name: jdbc/generic/
+  - name: rda/generic/
+

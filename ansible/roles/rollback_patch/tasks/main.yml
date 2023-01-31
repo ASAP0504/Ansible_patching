@@ -1,0 +1,5 @@
+---
+# tasks file for rollback_patch
+- name: Rollback Patches
+  shell: "{{OPATCH_PATH}}/opatch rollback -id {{item.id}} -silent"
+  with_items: "{{ROLLBACK_ID}}"

@@ -1,0 +1,16 @@
+---
+# vars file for check_patch
+ORACLE_HOME: /weblogic/weblogic_binary
+patch_todo: []
+apply: false
+patches:
+  - id: 33639718
+    name: p33639718_122140_Linux-x86-64.zip
+  - id: 34653267
+    name: p34653267_122140_Generic.zip
+      #- id: 34653266
+      #name: patch3
+      #- id: 34653223
+      #name: patch4    
+PATCH_REPO: /PATCH_REPO
+DEST_PATCH_REPO: /weblogic/PATCH_REPO

@@ -1,0 +1,7 @@
+---
+- name: Unzip Patch file
+  unarchive: 
+    src: "{{PATCH_REPO}}/{{item.name}}"
+    dest: "{{DEST_PATCH_REPO}}/"
+    mode: '0755'
+  with_items: "{{patch_todo}}"
